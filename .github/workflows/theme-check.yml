@@ -32,4 +32,4 @@ jobs:
       run: bundle exec rake
     - name: Test runtime
       # Testing that runtime can execute, not testing the results themselves
-      run: bundle exec theme-check ./test/theme | grep -q "files inspected"
+      run: theme-check ./test/theme | grep -q "files inspected"
