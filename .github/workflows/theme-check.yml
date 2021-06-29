@@ -1,6 +1,10 @@
 name: ThemeCheck
 
-on: [pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   test:
@@ -32,4 +36,4 @@ jobs:
       run: bundle exec rake
     - name: Test runtime
       # Testing that runtime can execute, not testing the results themselves
-      run: theme-check ./test/theme | grep -q "files inspected"
+      run: bundle exec theme-check ./test/theme | grep -q "files inspected"
