@@ -61,7 +61,7 @@ GEM
       ffi (~> 1.0)
     regexp_parser (2.1.1)
     rexml (3.2.5)
-    rubocop (1.12.1)
+    rubocop (1.12.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -72,7 +72,7 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.7.0)
       parser (>= 3.0.1.1)
-    rubocop-minitest (0.11.1)
+    rubocop-minitest (0.11.0)
       rubocop (>= 0.90, < 2.0)
     rubocop-performance (1.10.2)
       rubocop (>= 0.90.0, < 2.0)
@@ -98,11 +98,11 @@ DEPENDENCIES
   mocha
   pry-byebug
   rake
-  rubocop (~> 1.12.0)
-  rubocop-minitest (~> 0.11.0)
-  rubocop-performance (~> 1.10.2)
-  rubocop-rake (~> 0.5.1)
-  rubocop-shopify (~> 1.0.7)
+  rubocop (= 1.12.0)
+  rubocop-minitest (= 0.11.0)
+  rubocop-performance (= 1.10.2)
+  rubocop-rake (= 0.5.1)
+  rubocop-shopify (= 1.0.7)
   theme-check!
 
 BUNDLED WITH
