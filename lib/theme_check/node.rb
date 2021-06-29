@@ -6,7 +6,8 @@ module ThemeCheck
     attr_reader :value, :parent, :template
 
     def initialize(value, parent, template)
-      raise ArgumentError, "Expected a Liquid AST Node" if value.is_a?(Node)
+      raise ArgumentError, 'Expected a Liquid AST Node' if value.is_a?(Node)
+
       @value = value
       @parent = parent
       @template = template
@@ -106,7 +107,7 @@ module ThemeCheck
     # Is this node inside a `{% liquid ... %}` block?
     def inside_liquid_tag?
       if line_number
-        template.excerpt(line_number).start_with?("{%")
+        template.excerpt(line_number).start_with?('{%')
       else
         false
       end
@@ -115,7 +116,7 @@ module ThemeCheck
     # Is this node inside a `{%- ... -%}`
     def whitespace_trimmed?
       if line_number
-        template.excerpt(line_number).start_with?("{%-")
+        template.excerpt(line_number).start_with?('{%-')
       else
         false
       end

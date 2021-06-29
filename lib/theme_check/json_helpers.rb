@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   module JsonHelpers
     def format_json_parse_error(error)

@@ -8,12 +8,12 @@ module ThemeCheck
     category :liquid
     doc docs_url(__FILE__)
 
-    REQUIRED_LIQUID_FILES = %w(layout/theme)
-    REQUIRED_TEMPLATE_FILES = %w(
+    REQUIRED_LIQUID_FILES = %w[layout/theme].freeze
+    REQUIRED_TEMPLATE_FILES = %w[
       index product collection cart blog article page list-collections search 404
       gift_card customers/account customers/activate_account customers/addresses
       customers/login customers/order customers/register customers/reset_password password
-    )
+    ]
       .map { |file| "templates/#{file}" }
 
     def on_end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-require "nokogumbo"
-require "forwardable"
+
+require 'nokogumbo'
+require 'forwardable'
 
 module ThemeCheck
   class HtmlVisitor

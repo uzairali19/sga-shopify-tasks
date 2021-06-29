@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   module SystemTranslations
     extend self
 
     def translations
-      @translations ||= YAML.load(File.read("#{__dir__}/../../../data/shopify_translation_keys.yml")).to_set
+      @translations ||= YAML.safe_load(File.read("#{__dir__}/../../../data/shopify_translation_keys.yml")).to_set
     end
 
     def include?(key)
@@ -18,9 +19,9 @@ module ThemeCheck
     doc docs_url(__FILE__)
 
     def on_variable(node)
-      return unless @theme.default_locale_json&.content&.is_a?(Hash)
+      return unless @theme.default_locale_json&.content.is_a?(Hash)
 
-      return unless node.value.filters.any? { |name, _| name == "t" || name == "translate" }
+      return unless node.value.filters.any? { |name, _| %w[t translate].include?(name) }
       return unless (key_node = node.children.first)
       return unless key_node.value.is_a?(String)
 
@@ -28,7 +29,7 @@ module ThemeCheck
         add_offense(
           "'#{key_node.value}' does not have a matching entry in '#{@theme.default_locale_json.relative_path}'",
           node: node,
-          markup: key_node.value,
+          markup: key_node.value
         )
       end
     end
@@ -37,8 +38,9 @@ module ThemeCheck
 
     def key_exists?(key)
       pointer = @theme.default_locale_json.content
-      key.split(".").each do |token|
+      key.split('.').each do |token|
         return false unless pointer.key?(token)
+
         pointer = pointer[token]
       end
 

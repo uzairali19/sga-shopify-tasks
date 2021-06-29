@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "set"
+
+require 'set'
 
 module ThemeCheck
   class UnusedSnippet < LiquidCheck
@@ -24,7 +25,7 @@ module ThemeCheck
 
     def on_end
       missing_snippets.each do |template|
-        add_offense("This template is not used", template: template)
+        add_offense('This template is not used', template: template)
       end
     end
 

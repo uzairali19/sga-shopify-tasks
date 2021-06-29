@@ -5,7 +5,7 @@ module ThemeCheck
     module VariableLookupFinder
       extend self
 
-      UNCLOSED_SQUARE_BRACKET = /\[[^\]]*\Z/
+      UNCLOSED_SQUARE_BRACKET = /\[[^\]]*\Z/.freeze
       ENDS_IN_BRACKET_POSITION_THAT_CANT_BE_COMPLETED = %r{
         (
           # quotes not preceded by a [
@@ -15,10 +15,10 @@ module ThemeCheck
           # opening [
           \[
         )$
-      }x
+      }x.freeze
 
-      VARIABLE_LOOKUP_CHARACTERS = /[a-z0-9_.'"\]\[]/i
-      VARIABLE_LOOKUP = /#{VARIABLE_LOOKUP_CHARACTERS}+/o
+      VARIABLE_LOOKUP_CHARACTERS = /[a-z0-9_.'"\]\[]/i.freeze
+      VARIABLE_LOOKUP = /#{VARIABLE_LOOKUP_CHARACTERS}+/o.freeze
       SYMBOLS_PRECEDING_POTENTIAL_LOOKUPS = %r{
         (?:
           \s(?:
@@ -31,16 +31,18 @@ module ThemeCheck
           |[:,=]
         )
         \s+
-      }omix
-      ENDS_WITH_BLANK_POTENTIAL_LOOKUP = /#{SYMBOLS_PRECEDING_POTENTIAL_LOOKUPS}$/oimx
-      ENDS_WITH_POTENTIAL_LOOKUP = /#{SYMBOLS_PRECEDING_POTENTIAL_LOOKUPS}#{VARIABLE_LOOKUP}$/oimx
+      }omix.freeze
+      ENDS_WITH_BLANK_POTENTIAL_LOOKUP = /#{SYMBOLS_PRECEDING_POTENTIAL_LOOKUPS}$/oimx.freeze
+      ENDS_WITH_POTENTIAL_LOOKUP = /#{SYMBOLS_PRECEDING_POTENTIAL_LOOKUPS}#{VARIABLE_LOOKUP}$/oimx.freeze
 
       def lookup(content, cursor)
         return if cursor_is_on_bracket_position_that_cant_be_completed(content, cursor)
+
         potential_lookup = lookup_liquid_variable(content, cursor) || lookup_liquid_tag(content, cursor)
 
         # And we only return it if it's parsed by Liquid as VariableLookup
         return unless potential_lookup.is_a?(Liquid::VariableLookup)
+
         potential_lookup
       end
 
@@ -65,6 +67,7 @@ module ThemeCheck
 
       def lookup_liquid_variable(content, cursor)
         return unless cursor_is_on_liquid_variable_lookup_position(content, cursor)
+
         start_index = content.match(/#{Liquid::VariableStart}-?/o).end(0) + 1
         end_index = cursor - 1
 
@@ -85,7 +88,7 @@ module ThemeCheck
         # otherwise the variable parse won't work.
         markup += "'" if markup.count("'").odd?
         markup += '"' if markup.count('"').odd?
-        markup += "]" if markup =~ UNCLOSED_SQUARE_BRACKET
+        markup += ']' if markup =~ UNCLOSED_SQUARE_BRACKET
 
         variable = variable_from_markup(markup)
 
@@ -128,21 +131,21 @@ module ThemeCheck
         current_tag = template.root.nodelist[0]
 
         case current_tag.tag_name
-        when "if", "unless"
+        when 'if', 'unless'
           variable_lookup_for_if_tag(current_tag)
-        when "case"
+        when 'case'
           variable_lookup_for_case_tag(current_tag)
-        when "cycle"
+        when 'cycle'
           variable_lookup_for_cycle_tag(current_tag)
-        when "for"
+        when 'for'
           variable_lookup_for_for_tag(current_tag)
-        when "tablerow"
+        when 'tablerow'
           variable_lookup_for_tablerow_tag(current_tag)
-        when "render"
+        when 'render'
           variable_lookup_for_render_tag(current_tag)
-        when "assign"
+        when 'assign'
           variable_lookup_for_assign_tag(current_tag)
-        when "echo"
+        when 'echo'
           variable_lookup_for_echo_tag(current_tag)
         end
 
@@ -161,7 +164,7 @@ module ThemeCheck
         # Welcome to Hackcity
         markup += "'" if markup.count("'").odd?
         markup += '"' if markup.count('"').odd?
-        markup += "]" if markup =~ UNCLOSED_SQUARE_BRACKET
+        markup += ']' if markup =~ UNCLOSED_SQUARE_BRACKET
 
         # Now check if it's a liquid tag
         is_liquid_tag = markup =~ tag_regex('liquid')
@@ -175,37 +178,44 @@ module ThemeCheck
         # if statements
         is_if_tag = markup =~ tag_regex('if')
         return :empty_lookup_markup if is_if_tag && ends_with_blank_potential_lookup
+
         markup += '{% endif %}' if is_if_tag
 
         # unless statements
         is_unless_tag = markup =~ tag_regex('unless')
         return :empty_lookup_markup if is_unless_tag && ends_with_blank_potential_lookup
+
         markup += '{% endunless %}' if is_unless_tag
 
         # elsif statements
         is_elsif_tag = markup =~ tag_regex('elsif')
         return :empty_lookup_markup if is_elsif_tag && ends_with_blank_potential_lookup
-        markup = '{% if x %}' + markup + '{% endif %}' if is_elsif_tag
+
+        markup = "{% if x %}#{markup}{% endif %}" if is_elsif_tag
 
         # case statements
         is_case_tag = markup =~ tag_regex('case')
         return :empty_lookup_markup if is_case_tag && ends_with_blank_potential_lookup
-        markup += "{% endcase %}" if is_case_tag
+
+        markup += '{% endcase %}' if is_case_tag
 
         # when
         is_when_tag = markup =~ tag_regex('when')
         return :empty_lookup_markup if is_when_tag && ends_with_blank_potential_lookup
-        markup = "{% case x %}" + markup + "{% endcase %}" if is_when_tag
+
+        markup = "{% case x %}#{markup}{% endcase %}" if is_when_tag
 
         # for statements
         is_for_tag = markup =~ tag_regex('for')
         return :empty_lookup_markup if is_for_tag && ends_with_blank_potential_lookup
-        markup += "{% endfor %}" if is_for_tag
+
+        markup += '{% endfor %}' if is_for_tag
 
         # tablerow statements
         is_tablerow_tag = markup =~ tag_regex('tablerow')
         return :empty_lookup_markup if is_tablerow_tag && ends_with_blank_potential_lookup
-        markup += "{% endtablerow %}" if is_tablerow_tag
+
+        markup += '{% endtablerow %}' if is_tablerow_tag
 
         markup
       end
@@ -218,11 +228,13 @@ module ThemeCheck
       def variable_lookup_for_condition(condition)
         return variable_lookup_for_condition(condition.child_condition) if condition.child_condition
         return condition.right if condition.right
+
         condition.left
       end
 
       def variable_lookup_for_case_tag(case_tag)
         return variable_lookup_for_case_block(case_tag.blocks.last) unless case_tag.blocks.empty?
+
         case_tag.left
       end
 
@@ -244,6 +256,7 @@ module ThemeCheck
 
       def variable_lookup_for_render_tag(render_tag)
         return empty_lookup if render_tag.raw =~ /:\s*$/
+
         render_tag.attributes.values.last
       end
 
@@ -280,6 +293,7 @@ module ThemeCheck
         filter = filters.last
         return filter[2].values.last if filter.size == 3
         return filter[1].last if filter.size == 2
+
         nil
       end
 

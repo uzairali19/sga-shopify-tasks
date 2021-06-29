@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   # Checks unused {% assign x = ... %}
   class UnusedAssign < LiquidCheck
@@ -6,7 +7,7 @@ module ThemeCheck
     category :liquid
     doc docs_url(__FILE__)
 
-    class TemplateInfo < Struct.new(:used_assigns, :assign_nodes, :includes)
+    TemplateInfo = Struct.new(:used_assigns, :assign_nodes, :includes) do
       def collect_used_assigns(templates, visited = Set.new)
         collected = used_assigns
         # Check recursively inside included snippets for use
@@ -46,9 +47,7 @@ module ThemeCheck
       @templates.each_pair do |_, info|
         used = info.collect_used_assigns(@templates)
         info.assign_nodes.each_pair do |name, node|
-          unless used.include?(name)
-            add_offense("`#{name}` is never used", node: node)
-          end
+          add_offense("`#{name}` is never used", node: node) unless used.include?(name)
         end
       end
     end

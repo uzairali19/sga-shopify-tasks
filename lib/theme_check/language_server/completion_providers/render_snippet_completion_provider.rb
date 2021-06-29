@@ -5,6 +5,7 @@ module ThemeCheck
     class RenderSnippetCompletionProvider < CompletionProvider
       def completions(content, cursor)
         return [] unless cursor_on_quoted_argument?(content, cursor)
+
         partial = snippet(content) || ''
         snippets
           .select { |x| x.start_with?(partial) }
@@ -16,12 +17,14 @@ module ThemeCheck
       def cursor_on_quoted_argument?(content, cursor)
         match = content.match(PARTIAL_RENDER)
         return false if match.nil?
+
         match.begin(:partial) <= cursor && cursor <= match.end(:partial)
       end
 
       def snippet(content)
         match = content.match(PARTIAL_RENDER)
         return if match.nil?
+
         match[:partial]
       end
 

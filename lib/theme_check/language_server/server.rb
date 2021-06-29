@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'json'
 require 'stringio'
 
@@ -9,13 +10,12 @@ module ThemeCheck
     class IncompatibleStream < StandardError; end
 
     class Server
-      attr_reader :handler
-      attr_reader :should_raise_errors
+      attr_reader :handler, :should_raise_errors
 
       def initialize(
-        in_stream: STDIN,
-        out_stream: STDOUT,
-        err_stream: STDERR,
+        in_stream: $stdin,
+        out_stream: $stdout,
+        err_stream: $stderr,
         should_raise_errors: false
       )
         validate!([in_stream, out_stream, err_stream])
@@ -42,6 +42,7 @@ module ThemeCheck
 
         rescue Exception => e # rubocop:disable Lint/RescueException
           raise e if should_raise_errors
+
           log(e)
           log(e.backtrace)
           return 1
@@ -92,9 +93,7 @@ module ThemeCheck
         params = request_json['params']
         method_name = "on_#{to_snake_case(method_name)}"
 
-        if @handler.respond_to?(method_name)
-          @handler.send(method_name, id, params)
-        end
+        @handler.send(method_name, id, params) if @handler.respond_to?(method_name)
       end
 
       def to_snake_case(method_name)
@@ -108,9 +107,7 @@ module ThemeCheck
           # gets returning nil means the stream was closed.
           raise DoneStreaming if initial_line.nil?
 
-          if initial_line.match(/Content-Length: (\d+)/)
-            break
-          end
+          break if initial_line.match(/Content-Length: (\d+)/)
         end
         initial_line
       end
@@ -122,7 +119,7 @@ module ThemeCheck
           begin
             # Why + 2? Because \r\n
             content += @in.read(length + 2)
-          rescue => e
+          rescue StandardError => e
             log(e)
             log(e.backtrace)
             # We have almost certainly been disconnected from the server
@@ -137,7 +134,7 @@ module ThemeCheck
       def cleanup
         @err.close
         @out.close
-      rescue
+      rescue StandardError
         # I did my best
       end
     end

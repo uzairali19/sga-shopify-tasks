@@ -3,10 +3,11 @@
 module ThemeCheck
   module LanguageServer
     class FilterCompletionProvider < CompletionProvider
-      NAMED_FILTER = /#{Liquid::FilterSeparator}\s*(\w+)/o
+      NAMED_FILTER = /#{Liquid::FilterSeparator}\s*(\w+)/o.freeze
 
       def completions(content, cursor)
         return [] unless can_complete?(content, cursor)
+
         available_labels
           .select { |w| w.start_with?(partial(content, cursor)) }
           .map { |filter| filter_to_completion(filter) }
@@ -27,6 +28,7 @@ module ThemeCheck
 
       def cursor_on_filter?(content, cursor)
         return false unless content.match?(NAMED_FILTER)
+
         matches(content, NAMED_FILTER).any? do |match|
           match.begin(1) <= cursor && cursor < match.end(1) + 1 # including next character
         end
@@ -34,10 +36,12 @@ module ThemeCheck
 
       def partial(content, cursor)
         return '' unless content.match?(NAMED_FILTER)
+
         partial_match = matches(content, NAMED_FILTER).find do |match|
           match.begin(1) <= cursor && cursor < match.end(1) + 1 # including next character
         end
         return '' if partial_match.nil?
+
         partial_match[1]
       end
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class MatchingSchemaTranslations < LiquidCheck
     severity :suggestion
@@ -18,13 +19,10 @@ module ThemeCheck
       # Check all used locales are defined in each localized keys
       visit_object(schema) do |key, locales|
         missing = used_locales - locales
-        if missing.any?
-          add_offense("#{key} missing translations for #{missing.join(', ')}", node: node)
-        end
+        add_offense("#{key} missing translations for #{missing.join(', ')}", node: node) if missing.any?
       end
 
-      check_locales(schema["locales"], node: node)
-
+      check_locales(schema['locales'], node: node)
     rescue JSON::ParserError
       # Ignored, handled in ValidSchema.
     end
@@ -38,16 +36,17 @@ module ThemeCheck
       if default_locale
         locales.each_pair do |name, content|
           diff = LocaleDiff.new(default_locale, content)
-          diff.add_as_offenses(self, key_prefix: ["locales", name], node: node)
+          diff.add_as_offenses(self, key_prefix: ['locales', name], node: node)
         end
       else
-        add_offense("Missing default locale in key: locales", node: node)
+        add_offense('Missing default locale in key: locales', node: node)
       end
     end
 
     def visit_object(object, top_path = [], &block)
       return unless object.is_a?(Hash)
-      top_path += [object["id"]] if object["id"].is_a?(String)
+
+      top_path += [object['id']] if object['id'].is_a?(String)
 
       object.each_pair do |key, value|
         path = top_path + [key]
@@ -61,7 +60,7 @@ module ThemeCheck
         when Hash
           # Localized key
           if value[theme.default_locale].is_a?(String)
-            block.call(path.join("."), value.keys)
+            block.call(path.join('.'), value.keys)
           # Nested keys
           else
             visit_object(value, path, &block)

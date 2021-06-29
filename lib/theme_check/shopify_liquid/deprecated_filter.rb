@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'yaml'
 
 module ThemeCheck
@@ -17,7 +18,7 @@ module ThemeCheck
       private
 
       def all
-        @all ||= YAML.load(File.read("#{__dir__}/../../../data/shopify_liquid/deprecated_filters.yml"))
+        @all ||= YAML.safe_load(File.read("#{__dir__}/../../../data/shopify_liquid/deprecated_filters.yml"))
           .values
           .each_with_object({}) do |filters, acc|
           filters.each do |(filter, alternatives)|

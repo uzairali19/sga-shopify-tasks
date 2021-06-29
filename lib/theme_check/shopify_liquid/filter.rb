@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'yaml'
 
 module ThemeCheck
@@ -7,7 +8,7 @@ module ThemeCheck
       extend self
 
       def labels
-        @labels ||= YAML.load(File.read("#{__dir__}/../../../data/shopify_liquid/filters.yml"))
+        @labels ||= YAML.safe_load(File.read("#{__dir__}/../../../data/shopify_liquid/filters.yml"))
           .values
           .flatten
       end

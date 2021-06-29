@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Here we define the Language Server Protocol Constants we're using.
 # For complete docs, see the following:
 # https://microsoft.github.io/language-server-protocol/specifications/specification-current

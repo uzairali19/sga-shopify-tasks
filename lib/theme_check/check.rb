@@ -1,27 +1,27 @@
 # frozen_string_literal: true
-require_relative "json_helpers"
+
+require_relative 'json_helpers'
 
 module ThemeCheck
   class Check
     include JsonHelpers
 
-    attr_accessor :theme
-    attr_accessor :options, :ignored_patterns
+    attr_accessor :theme, :options, :ignored_patterns
     attr_writer :offenses
 
-    SEVERITIES = [
-      :error,
-      :suggestion,
-      :style,
-    ]
+    SEVERITIES = %i[
+      error
+      suggestion
+      style
+    ].freeze
 
-    CATEGORIES = [
-      :liquid,
-      :translation,
-      :html,
-      :json,
-      :performance,
-    ]
+    CATEGORIES = %i[
+      liquid
+      translation
+      html
+      json
+      performance
+    ].freeze
 
     class << self
       def all
@@ -30,9 +30,8 @@ module ThemeCheck
 
       def severity(severity = nil)
         if severity
-          unless SEVERITIES.include?(severity)
-            raise ArgumentError, "unknown severity. Use: #{SEVERITIES.join(', ')}"
-          end
+          raise ArgumentError, "unknown severity. Use: #{SEVERITIES.join(', ')}" unless SEVERITIES.include?(severity)
+
           @severity = severity
         end
         @severity if defined?(@severity)
@@ -41,10 +40,10 @@ module ThemeCheck
       def categories(*categories)
         @categories ||= []
         if categories.any?
-          unknown_categories = categories.select { |category| !CATEGORIES.include?(category) }
+          unknown_categories = categories.reject { |category| CATEGORIES.include?(category) }
           if unknown_categories.any?
             raise ArgumentError,
-              "unknown categories: #{unknown_categories.join(', ')}. Use: #{CATEGORIES.join(', ')}"
+                  "unknown categories: #{unknown_categories.join(', ')}. Use: #{CATEGORIES.join(', ')}"
           end
           @categories = categories
         end
@@ -62,16 +61,12 @@ module ThemeCheck
       end
 
       def can_disable(disableable = nil)
-        unless disableable.nil?
-          @can_disable = disableable
-        end
+        @can_disable = disableable unless disableable.nil?
         defined?(@can_disable) ? @can_disable : true
       end
 
       def single_file(single_file = nil)
-        unless single_file.nil?
-          @single_file = single_file
-        end
+        @single_file = single_file unless single_file.nil?
         defined?(@single_file) ? @single_file : !method_defined?(:on_end)
       end
     end
@@ -81,7 +76,8 @@ module ThemeCheck
     end
 
     def add_offense(message, node: nil, template: node&.template, markup: nil, line_number: nil, &block)
-      offenses << Offense.new(check: self, message: message, template: template, node: node, markup: markup, line_number: line_number, correction: block)
+      offenses << Offense.new(check: self, message: message, template: template, node: node, markup: markup,
+                              line_number: line_number, correction: block)
     end
 
     def severity

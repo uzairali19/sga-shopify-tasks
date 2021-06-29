@@ -4,7 +4,7 @@ module ThemeCheck
   Token = Struct.new(
     :content,
     :start, # inclusive
-    :end, # exclusive
+    :end # exclusive
   )
 
   TAG_START = Liquid::TagStart
@@ -14,7 +14,7 @@ module ThemeCheck
   SPLITTER = %r{
     (?=(?:#{TAG_START}|#{VARIABLE_START}))| # positive lookahead on tag/variable start
     (?<=(?:#{TAG_END}|#{VARIABLE_END}))     # positive lookbehind on tag/variable end
-  }xom
+  }xom.freeze
 
   # Implemented as an Enumerable so we stop iterating on the find once
   # we have what we want. Kind of a perf thing.
@@ -29,7 +29,7 @@ module ThemeCheck
       return to_enum(:each) unless block_given?
 
       chunks = @buffer.split(SPLITTER)
-      chunks.shift if chunks[0]&.empty?
+      chunks.shift if chunks[0] && chunks[0].empty?
 
       prev = Token.new('', 0, 0)
       curr = Token.new('', 0, 0)
@@ -41,8 +41,8 @@ module ThemeCheck
 
         block.call(Token.new(
           content,
-          curr.start,
-          curr.end,
+                     curr.start,
+                     curr.end
         ))
 
         # recycling structs

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class ContentForHeaderModification < LiquidCheck
     severity :error
@@ -12,12 +13,12 @@ module ThemeCheck
 
     def on_variable(node)
       return unless node.value.name.is_a?(Liquid::VariableLookup)
-      return unless node.value.name.name == "content_for_header"
+      return unless node.value.name.name == 'content_for_header'
 
       if @in_assign || @in_capture || node.value.filters.any?
         add_offense(
-          "Do not rely on the content of `content_for_header`",
-          node: node,
+          'Do not rely on the content of `content_for_header`',
+          node: node
         )
       end
     end

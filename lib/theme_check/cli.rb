@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "optparse"
+
+require 'optparse'
 
 module ThemeCheck
   class Cli
@@ -8,7 +9,7 @@ module ThemeCheck
     attr_accessor :path
 
     def initialize
-      @path = "."
+      @path = '.'
       @command = :check
       @only_categories = []
       @exclude_categories = []
@@ -18,52 +19,53 @@ module ThemeCheck
 
     def option_parser(parser = OptionParser.new, help: true)
       return @option_parser if defined?(@option_parser)
-      @option_parser = parser
-      @option_parser.banner = "Usage: theme-check [options] [/path/to/your/theme]"
 
-      @option_parser.separator("")
-      @option_parser.separator("Basic Options:")
+      @option_parser = parser
+      @option_parser.banner = 'Usage: theme-check [options] [/path/to/your/theme]'
+
+      @option_parser.separator('')
+      @option_parser.separator('Basic Options:')
       @option_parser.on(
-        "-C", "--config PATH",
-        "Use the config provided, overriding .theme-check.yml if present"
+        '-C', '--config PATH',
+        'Use the config provided, overriding .theme-check.yml if present'
       ) { |path| @config_path = path }
       @option_parser.on(
-        "-c", "--category CATEGORY",
-        "Only run this category of checks"
+        '-c', '--category CATEGORY',
+        'Only run this category of checks'
       ) { |category| @only_categories << category.to_sym }
       @option_parser.on(
-        "-x", "--exclude-category CATEGORY",
-        "Exclude this category of checks"
+        '-x', '--exclude-category CATEGORY',
+        'Exclude this category of checks'
       ) { |category| @exclude_categories << category.to_sym }
       @option_parser.on(
-        "-a", "--auto-correct",
-        "Automatically fix offenses"
+        '-a', '--auto-correct',
+        'Automatically fix offenses'
       ) { @auto_correct = true }
 
-      @option_parser.separator("")
-      @option_parser.separator("Miscellaneous:")
+      @option_parser.separator('')
+      @option_parser.separator('Miscellaneous:')
       @option_parser.on(
-        "--init",
-        "Generate a .theme-check.yml file"
+        '--init',
+        'Generate a .theme-check.yml file'
       ) { @command = :init }
       @option_parser.on(
-        "--print",
-        "Output active config to STDOUT"
+        '--print',
+        'Output active config to STDOUT'
       ) { @command = :print }
       @option_parser.on(
-        "-h", "--help",
-        "Show this. Hi!"
+        '-h', '--help',
+        'Show this. Hi!'
       ) { @command = :help } if help
       @option_parser.on(
-        "-l", "--list",
-        "List enabled checks"
+        '-l', '--list',
+        'List enabled checks'
       ) { @command = :list }
       @option_parser.on(
-        "-v", "--version",
-        "Print Theme Check version"
+        '-v', '--version',
+        'Print Theme Check version'
       ) { @command = :version }
 
-      @option_parser.separator("")
+      @option_parser.separator('')
       @option_parser.separator(<<~EOS)
         Description:
             Theme Check helps you follow Shopify Themes & Liquid best practices by analyzing the
@@ -76,11 +78,11 @@ module ThemeCheck
     end
 
     def parse(argv)
-      @path = option_parser.parse(argv).first || "."
+      @path = option_parser.parse(argv).first || '.'
     end
 
     def run!
-      unless [:version, :init, :help].include?(@command)
+      unless %i[version init help].include?(@command)
         @config = if @config_path
           ThemeCheck::Config.new(
             root: @path,
@@ -150,14 +152,13 @@ module ThemeCheck
       puts "Checking #{@config.root} ..."
       storage = ThemeCheck::FileSystemStorage.new(@config.root, ignored_patterns: @config.ignored_patterns)
       theme = ThemeCheck::Theme.new(storage)
-      if theme.all.empty?
-        raise Abort, "No templates found."
-      end
+      raise Abort, 'No templates found.' if theme.all.empty?
+
       analyzer = ThemeCheck::Analyzer.new(theme, @config.enabled_checks, @config.auto_correct)
       analyzer.analyze_theme
       analyzer.correct_offenses
       ThemeCheck::Printer.new.print(theme, analyzer.offenses, @config.auto_correct)
-      raise Abort, "" if analyzer.uncorrectable_offenses.any?
+      raise Abort, '' if analyzer.uncorrectable_offenses.any?
     end
   end
 end

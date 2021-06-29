@@ -15,7 +15,7 @@ module ThemeCheck
     # See also #deconstantize.
     def demodulize(path)
       path = path.to_s
-      if (i = path.rindex("::"))
+      if (i = path.rindex('::'))
         path[(i + 2)..-1]
       else
         path
@@ -36,10 +36,11 @@ module ThemeCheck
     #   camelize(underscore('SSLError'))  # => "SslError"
     def underscore(camel_cased_word)
       return camel_cased_word unless /[A-Z-]|::/.match?(camel_cased_word)
-      word = camel_cased_word.to_s.gsub("::", "/")
+
+      word = camel_cased_word.to_s.gsub('::', '/')
       word.gsub!(/([A-Z\d]+)([A-Z][a-z])/, '\1_\2')
       word.gsub!(/([a-z\d])([A-Z])/, '\1_\2')
-      word.tr!("-", "_")
+      word.tr!('-', '_')
       word.downcase!
       word
     end

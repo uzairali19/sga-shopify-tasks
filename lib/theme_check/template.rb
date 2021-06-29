@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "pathname"
+
+require 'pathname'
 
 module ThemeCheck
   class Template
@@ -97,7 +98,7 @@ module ThemeCheck
       Liquid::Template.parse(
         source,
         line_numbers: true,
-        error_mode: :warn,
+        error_mode: :warn
       )
     end
   end

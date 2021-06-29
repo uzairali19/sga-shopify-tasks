@@ -9,33 +9,27 @@ module ThemeCheck
       end
 
       correctable = offenses.select(&:correctable?)
-      puts "#{theme.all.size} files inspected, #{red(offenses.size.to_s + ' offenses')} detected, \
-#{yellow(correctable.size.to_s + ' offenses')} #{auto_correct ? 'corrected' : 'auto-correctable'}"
+      puts "#{theme.all.size} files inspected, #{red("#{offenses.size} offenses")} detected, \
+#{yellow("#{correctable.size} offenses")} #{auto_correct ? 'corrected' : 'auto-correctable'}"
     end
 
     def print_offense(offense, auto_correct)
       location = if offense.location
-        blue(offense.location) + ": "
+        "#{blue(offense.location)}: "
       else
-        ""
+        ''
       end
 
       corrected = if auto_correct && offense.correctable?
-        green("[Corrected] ")
+        green('[Corrected] ')
       else
-        ""
+        ''
       end
 
-      puts location +
-        colorized_severity(offense.severity) + ": " +
-        yellow(offense.check_name) + ": " +
-        corrected +
-        offense.message + "."
+      puts "#{location}#{colorized_severity(offense.severity)}: #{yellow(offense.check_name)}: #{corrected}#{offense.message}."
       if offense.source_excerpt
         puts "\t#{offense.source_excerpt}"
-        if offense.markup_start_in_excerpt
-          puts "\t" + (" " * offense.markup_start_in_excerpt) + ("^" * offense.markup.size)
-        end
+        puts "\t#{' ' * offense.markup_start_in_excerpt}#{'^' * offense.markup.size}" if offense.markup_start_in_excerpt
       end
     end
 

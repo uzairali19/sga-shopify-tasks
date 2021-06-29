@@ -4,7 +4,7 @@ module ThemeCheck
   class DisabledChecks
     DISABLE_START = 'theme-check-disable'
     DISABLE_END = 'theme-check-enable'
-    DISABLE_PREFIX_PATTERN = /#{DISABLE_START}|#{DISABLE_END}/
+    DISABLE_PREFIX_PATTERN = /#{DISABLE_START}|#{DISABLE_END}/.freeze
 
     ACTION_DISABLE_CHECKS = :disable
     ACTION_ENABLE_CHECKS = :enable
@@ -28,6 +28,7 @@ module ThemeCheck
         checks_from_text(text).each do |check_name|
           disabled = @disabled_checks[[node.template, check_name]]
           next unless disabled
+
           disabled.end_index = node.end_index
         end
       end
@@ -75,6 +76,7 @@ module ThemeCheck
     def checks_from_text(text)
       checks = text.gsub(DISABLE_PREFIX_PATTERN, '').strip.split(',').map(&:strip)
       return [:all] if checks.empty?
+
       checks
     end
   end

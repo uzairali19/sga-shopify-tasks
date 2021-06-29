@@ -5,6 +5,7 @@ module ThemeCheck
     class TagCompletionProvider < CompletionProvider
       def completions(content, cursor)
         return [] unless can_complete?(content, cursor)
+
         partial = first_word(content) || ''
         ShopifyLiquid::Tag.labels
           .select { |w| w.start_with?(partial) }

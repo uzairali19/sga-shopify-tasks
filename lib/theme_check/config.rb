@@ -4,7 +4,7 @@ module ThemeCheck
   class Config
     DOTFILE = '.theme-check.yml'
     DEFAULT_CONFIG = "#{__dir__}/../../config/default.yml"
-    BOOLEAN = [true, false]
+    BOOLEAN = [true, false].freeze
 
     attr_reader :root
     attr_accessor :only_categories, :exclude_categories, :auto_correct
@@ -22,7 +22,7 @@ module ThemeCheck
       end
 
       def from_string(config)
-        new(configuration: YAML.load(config), should_resolve_requires: false)
+        new(configuration: YAML.safe_load(config), should_resolve_requires: false)
       end
 
       def from_hash(config)
@@ -55,8 +55,8 @@ module ThemeCheck
       end
       merge_with_default_configuration!(@configuration)
 
-      @root = if root && @configuration.key?("root")
-        Pathname.new(root).join(@configuration["root"])
+      @root = if root && @configuration.key?('root')
+        Pathname.new(root).join(@configuration['root'])
       elsif root
         Pathname.new(root)
       end
@@ -82,7 +82,7 @@ module ThemeCheck
 
     def enabled_checks
       @enabled_checks ||= check_configurations.map do |check_name, options|
-        next unless options["enabled"]
+        next unless options['enabled']
 
         check_class = ThemeCheck.const_get(check_name)
 
@@ -104,7 +104,7 @@ module ThemeCheck
     end
 
     def ignored_patterns
-      self["ignore"] || []
+      self['ignore'] || []
     end
 
     private
@@ -125,7 +125,7 @@ module ThemeCheck
 
         default = default_configuration[key]
         keys = parent_keys + [key]
-        name = keys.join(".")
+        name = keys.join('.')
 
         if check_name?(key)
           if value.is_a?(Hash)
@@ -162,7 +162,7 @@ module ThemeCheck
     end
 
     def resolve_requires
-      self["require"]&.each do |path|
+      self['require']&.each do |path|
         require(File.join(@root, path))
       end
     end

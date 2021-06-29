@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class Analyzer
     def initialize(theme, checks = Check.all.map(&:new), auto_correct = false)
@@ -72,11 +73,9 @@ module ThemeCheck
     end
 
     def uncorrectable_offenses
-      unless @auto_correct
-        return offenses
-      end
+      return offenses unless @auto_correct
 
-      offenses.select { |offense| !offense.correctable? }
+      offenses.reject(&:correctable?)
     end
 
     def correct_offenses

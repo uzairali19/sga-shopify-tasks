@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class LocaleDiff
-    PLURALIZATION_KEYS = Set.new(["zero", "one", "two", "few", "many", "other"])
+    PLURALIZATION_KEYS = Set.new(%w[zero one two few many other])
 
     attr_reader :extra_keys, :missing_keys
 
@@ -16,13 +17,13 @@ module ThemeCheck
 
     def add_as_offenses(check, key_prefix: [], node: nil, template: nil)
       if extra_keys.any?
-        add_keys_offense(check, "Extra translation keys", extra_keys,
-          key_prefix: key_prefix, node: node, template: template)
+        add_keys_offense(check, 'Extra translation keys', extra_keys,
+                         key_prefix: key_prefix, node: node, template: template)
       end
 
       if missing_keys.any?
-        add_keys_offense(check, "Missing translation keys", missing_keys,
-          key_prefix: key_prefix, node: node, template: template)
+        add_keys_offense(check, 'Missing translation keys', missing_keys,
+                         key_prefix: key_prefix, node: node, template: template)
       end
     end
 
@@ -38,7 +39,7 @@ module ThemeCheck
     end
 
     def format_keys(key_prefix, keys)
-      keys.map { |path| (key_prefix + path).join(".") }.join(", ")
+      keys.map { |path| (key_prefix + path).join('.') }.join(', ')
     end
 
     def visit_object(default, other, path)

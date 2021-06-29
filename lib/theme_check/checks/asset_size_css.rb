@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class AssetSizeCSS < HtmlCheck
     include RegexHelpers
@@ -13,10 +14,12 @@ module ThemeCheck
     end
 
     def on_link(node)
-      return if node.attributes['rel']&.value != "stylesheet"
+      return if node.attributes['rel']&.value != 'stylesheet'
+
       file_size = href_to_file_size(node.attributes['href']&.value)
       return if file_size.nil?
       return if file_size <= threshold_in_bytes
+
       add_offense(
         "CSS on every page load exceeding compressed size threshold (#{threshold_in_bytes} Bytes).",
         node: node

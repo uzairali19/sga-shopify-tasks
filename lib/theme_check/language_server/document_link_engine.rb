@@ -13,10 +13,11 @@ module ThemeCheck
       def document_links(relative_path)
         buffer = @storage.read(relative_path)
         return [] unless buffer
+
         matches(buffer, PARTIAL_RENDER).map do |match|
           start_line, start_character = from_index_to_row_column(
             buffer,
-            match.begin(:partial),
+            match.begin(:partial)
           )
 
           end_line, end_character = from_index_to_row_column(
@@ -41,7 +42,7 @@ module ThemeCheck
       end
 
       def link(partial)
-        "file://#{@storage.path('snippets/' + partial + '.liquid')}"
+        "file://#{@storage.path("snippets/#{partial}.liquid")}"
       end
     end
   end

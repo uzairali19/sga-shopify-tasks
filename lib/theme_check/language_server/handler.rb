@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "benchmark"
+
+require 'benchmark'
 
 module ThemeCheck
   module LanguageServer
@@ -16,7 +17,7 @@ module ThemeCheck
           willSave: false,
           save: true,
         },
-      }
+      }.freeze
 
       def initialize(server)
         @server = server
@@ -24,10 +25,11 @@ module ThemeCheck
       end
 
       def on_initialize(id, params)
-        @root_path = path_from_uri(params["rootUri"]) || params["rootPath"]
+        @root_path = path_from_uri(params['rootUri']) || params['rootPath']
 
         # Tell the client we don't support anything if there's no rootPath
         return send_response(id, { capabilities: {} }) if @root_path.nil?
+
         @storage = in_memory_storage(@root_path)
         @completion_engine = CompletionEngine.new(@storage)
         @document_link_engine = DocumentLinkEngine.new(@storage)
@@ -49,11 +51,12 @@ module ThemeCheck
 
       def on_text_document_did_close(_id, params)
         relative_path = relative_path_from_text_document_uri(params)
-        @storage.write(relative_path, "")
+        @storage.write(relative_path, '')
       end
 
       def on_text_document_did_open(_id, params)
         return unless @diagnostics_tracker.first_run?
+
         relative_path = relative_path_from_text_document_uri(params)
         @storage.write(relative_path, text_document_text(params))
         analyze_and_send_offenses(text_document_uri(params))
@@ -88,7 +91,7 @@ module ThemeCheck
 
         # Turn that into a hash of empty buffers
         files = fs.files
-          .map { |fn| [fn, ""] }
+          .map { |fn| [fn, ''] }
           .to_h
 
         InMemoryStorage.new(files, config.root)
@@ -135,7 +138,7 @@ module ThemeCheck
           time = Benchmark.measure do
             offenses = analyzer.analyze_theme
           end
-          log("Found #{offenses.size} offenses in #{format("%0.2f", time.real)}s")
+          log("Found #{offenses.size} offenses in #{format('%0.2f', time.real)}s")
           send_diagnostics(offenses)
         else
           # Analyze selected files
@@ -148,7 +151,7 @@ module ThemeCheck
             time = Benchmark.measure do
               offenses = analyzer.analyze_files([file])
             end
-            log("Found #{offenses.size} new offenses in #{format("%0.2f", time.real)}s")
+            log("Found #{offenses.size} new offenses in #{format('%0.2f', time.real)}s")
             send_diagnostics(offenses, [absolute_path])
           end
         end
@@ -182,9 +185,9 @@ module ThemeCheck
           message: offense.message,
           range: range(offense),
           severity: severity(offense),
-          source: "theme-check",
+          source: 'theme-check',
         }
-        diagnostic["codeDescription"] = code_description(offense) unless offense.doc.nil?
+        diagnostic['codeDescription'] = code_description(offense) unless offense.doc.nil?
         diagnostic
       end
 

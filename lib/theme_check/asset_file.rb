@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-require "pathname"
-require "zlib"
+
+require 'pathname'
+require 'zlib'
 
 module ThemeCheck
   class AssetFile

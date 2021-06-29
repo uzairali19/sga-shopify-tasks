@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   # Ensure {% ... %} & {{ ... }} have consistent spaces.
   class SpaceInsideBraces < LiquidCheck
@@ -12,7 +13,7 @@ module ThemeCheck
 
     def on_node(node)
       return unless node.markup
-      return if :assign == node.type_name
+      return if node.type_name == :assign
 
       outside_of_strings(node.markup) do |chunk|
         chunk.scan(/([,:|]|==|<>|<=|>=|<|>|!=)  +/) do |_match|
@@ -33,11 +34,11 @@ module ThemeCheck
     def on_tag(node)
       if node.inside_liquid_tag?
         markup = if node.whitespace_trimmed?
-          "-%}"
+          '-%}'
         else
-          "%}"
+          '%}'
         end
-        if node.markup[-1] != " " && node.markup[-1] != "\n"
+        if node.markup[-1] != ' ' && node.markup[-1] != "\n"
           add_offense("Space missing before '#{markup}'", node: node, markup: node.markup[-1] + markup)
         elsif node.markup =~ /(\n?)(  +)\z/m && Regexp.last_match(1) != "\n"
           add_offense("Too many spaces before '#{markup}'", node: node, markup: Regexp.last_match(2) + markup)
@@ -52,22 +53,23 @@ module ThemeCheck
 
     def on_variable(node)
       return if @ignore
-      if node.markup[0] != " "
+
+      if node.markup[0] != ' '
         add_offense("Space missing after '{{'", node: node) do |corrector|
-          corrector.insert_before(node, " ")
+          corrector.insert_before(node, ' ')
         end
       end
-      if node.markup[-1] != " "
+      if node.markup[-1] != ' '
         add_offense("Space missing before '}}'", node: node) do |corrector|
-          corrector.insert_after(node, " ")
+          corrector.insert_after(node, ' ')
         end
       end
-      if node.markup[0] == " " && node.markup[1] == " "
+      if node.markup[0] == ' ' && node.markup[1] == ' '
         add_offense("Too many spaces after '{{'", node: node) do |corrector|
           corrector.replace(node, " #{node.markup.lstrip}")
         end
       end
-      if node.markup[-1] == " " && node.markup[-2] == " "
+      if node.markup[-1] == ' ' && node.markup[-2] == ' '
         add_offense("Too many spaces before '}}'", node: node) do |corrector|
           corrector.replace(node, "#{node.markup.rstrip} ")
         end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "logger"
+
+require 'logger'
 
 module ThemeCheck
   module LanguageServer
@@ -21,6 +22,7 @@ module ThemeCheck
 
         offenses.group_by(&:template).each do |template, template_offenses|
           next unless template
+
           reported_offenses = template_offenses
           previous_offenses = @single_files_offenses[template.path]
           if analyzed_files.nil? || analyzed_files.include?(template.path)

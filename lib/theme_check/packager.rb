@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class Packager
-    ROOT = File.expand_path('../../..', __FILE__)
+    ROOT = File.expand_path('../..', __dir__)
     PACKAGING_DIR = File.join(ROOT, 'packaging')
     BUILDS_DIR = File.join(PACKAGING_DIR, 'builds', ThemeCheck::VERSION)
 
@@ -12,16 +13,16 @@ module ThemeCheck
     def build_homebrew
       root_dir = File.join(PACKAGING_DIR, 'homebrew')
 
-      build_path = File.join(BUILDS_DIR, "theme-check.rb")
+      build_path = File.join(BUILDS_DIR, 'theme-check.rb')
       puts "\nBuilding Homebrew package"
 
-      puts "Generating formula..."
+      puts 'Generating formula...'
       File.delete(build_path) if File.exist?(build_path)
 
       spec_contents = File.read(File.join(root_dir, 'theme_check.base.rb'))
       spec_contents = spec_contents.gsub('THEME_CHECK_VERSION', ThemeCheck::VERSION)
 
-      puts "Grabbing sha256 checksum from Rubygems.org"
+      puts 'Grabbing sha256 checksum from Rubygems.org'
       require 'digest/sha2'
       require 'open-uri'
       gem_checksum = URI.open("https://rubygems.org/downloads/theme-check-#{ThemeCheck::VERSION}.gem") do |io|

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class Offense
     MAX_SOURCE_EXCERPT_SIZE = 120
@@ -14,7 +15,7 @@ module ThemeCheck
       elsif defined?(check.class::MESSAGE)
         @message = check.class::MESSAGE
       else
-        raise ArgumentError, "message required"
+        raise ArgumentError, 'message required'
       end
 
       @node = node
@@ -25,13 +26,9 @@ module ThemeCheck
         @template = template
       end
 
-      @markup = if markup
-        markup
-      else
-        node&.markup
-      end
+      @markup = markup || node&.markup
 
-      raise ArgumentError, "Offense markup cannot be an empty string" if @markup.is_a?(String) && @markup.empty?
+      raise ArgumentError, 'Offense markup cannot be an empty string' if @markup.is_a?(String) && @markup.empty?
 
       @line_number = if line_number
         line_number
@@ -44,10 +41,11 @@ module ThemeCheck
 
     def source_excerpt
       return unless line_number
+
       @source_excerpt ||= begin
         excerpt = template.source_excerpt(line_number)
         if excerpt.size > MAX_SOURCE_EXCERPT_SIZE
-          excerpt[0, MAX_SOURCE_EXCERPT_SIZE - 3] + '...'
+          "#{excerpt[0, MAX_SOURCE_EXCERPT_SIZE - 3]}..."
         else
           excerpt
         end
@@ -100,7 +98,7 @@ module ThemeCheck
 
     def location
       tokens = [template&.relative_path, line_number].compact
-      tokens.join(":") if tokens.any?
+      tokens.join(':') if tokens.any?
     end
 
     def correctable?

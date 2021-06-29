@@ -46,11 +46,13 @@ module ThemeCheck
 
     def contents
       return '' unless @contents.is_a?(String) && !@contents.empty?
+
       @contents
     end
 
     def line_number
       return 0 if @line_number_1_indexed.nil?
+
       bounded(0, @line_number_1_indexed - 1, contents.lines.size - 1)
     end
 
@@ -66,11 +68,13 @@ module ThemeCheck
 
     def start_row_column
       return @start_row_column unless @start_row_column.nil?
+
       @start_row_column = from_index_to_row_column(contents, start_index)
     end
 
     def end_row_column
       return @end_row_column unless @end_row_column.nil?
+
       @end_row_column = from_index_to_row_column(contents, end_index)
     end
   end

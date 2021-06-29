@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class Visitor
     attr_reader :checks
@@ -10,9 +11,9 @@ module ThemeCheck
 
     def visit_template(template)
       visit(Node.new(template.root, nil, template))
-    rescue Liquid::Error => exception
-      exception.template_name = template.name
-      call_checks(:on_error, exception)
+    rescue Liquid::Error => e
+      e.template_name = template.name
+      call_checks(:on_error, e)
     end
 
     private

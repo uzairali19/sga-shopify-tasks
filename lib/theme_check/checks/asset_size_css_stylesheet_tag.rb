@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class AssetSizeCSSStylesheetTag < LiquidCheck
     include RegexHelpers
@@ -12,9 +13,11 @@ module ThemeCheck
 
     def on_variable(node)
       used_filters = node.value.filters.map { |name, *_rest| name }
-      return unless used_filters.include?("stylesheet_tag")
-      file_size = href_to_file_size('{{' + node.markup + '}}')
+      return unless used_filters.include?('stylesheet_tag')
+
+      file_size = href_to_file_size("{{#{node.markup}}}")
       return if file_size <= @threshold_in_bytes
+
       add_offense(
         "CSS on every page load exceeding compressed size threshold (#{@threshold_in_bytes} Bytes).",
         node: node

@@ -5,7 +5,7 @@ module ThemeCheck
     # Copied tags parsing code from storefront-renderer
 
     class Section < Liquid::Tag
-      SYNTAX = /\A\s*(?<section_name>#{Liquid::QuotedString})\s*\z/o
+      SYNTAX = /\A\s*(?<section_name>#{Liquid::QuotedString})\s*\z/o.freeze
 
       attr_reader :section_name
 
@@ -13,17 +13,19 @@ module ThemeCheck
         super
 
         match = markup.match(SYNTAX)
-        raise(
-          Liquid::SyntaxError,
-          "Error in tag 'section' - Valid syntax: section '[type]'",
-        ) unless match
+        unless match
+          raise(
+            Liquid::SyntaxError,
+            "Error in tag 'section' - Valid syntax: section '[type]'"
+          )
+        end
         @section_name = match[:section_name].tr(%('"), '')
-        @section_name.chomp!(".liquid") if @section_name.end_with?(".liquid")
+        @section_name.chomp!('.liquid') if @section_name.end_with?('.liquid')
       end
     end
 
     class Form < Liquid::Block
-      TAG_ATTRIBUTES = /([\w\-]+)\s*:\s*(#{Liquid::QuotedFragment})/o
+      TAG_ATTRIBUTES = /([\w\-]+)\s*:\s*(#{Liquid::QuotedFragment})/o.freeze
       # Matches forms with arguments:
       #  'type', object
       #  'type', object, key: value, ...
@@ -35,7 +37,7 @@ module ThemeCheck
         (?<type>#{Liquid::QuotedFragment})
         (?:\s*,\s*(?<variable_name>#{Liquid::VariableSignature}+)(?!:))?
         (?<attributes>(?:\s*,\s*(?:#{TAG_ATTRIBUTES}))*)\s*\Z
-      }xo
+      }xo.freeze
 
       attr_reader :type_expr, :variable_name_expr, :tag_attributes
 
@@ -43,6 +45,7 @@ module ThemeCheck
         super
         @match = FORM_FORMAT.match(markup)
         raise Liquid::SyntaxError, "in 'form' - Valid syntax: form 'type'[, object]" unless @match
+
         @type_expr = parse_expression(@match[:type])
         @variable_name_expr = parse_expression(@match[:variable_name])
         tag_attributes = @match[:attributes].scan(TAG_ATTRIBUTES)
@@ -60,7 +63,7 @@ module ThemeCheck
     end
 
     class Paginate < Liquid::Block
-      SYNTAX = /(?<liquid_variable_name>#{Liquid::QuotedFragment})\s*((?<by>by)\s*(?<page_size>#{Liquid::QuotedFragment}))?/
+      SYNTAX = /(?<liquid_variable_name>#{Liquid::QuotedFragment})\s*((?<by>by)\s*(?<page_size>#{Liquid::QuotedFragment}))?/.freeze
 
       attr_reader :page_size
 
@@ -97,19 +100,21 @@ module ThemeCheck
     end
 
     class Layout < Liquid::Tag
-      SYNTAX = /(?<layout>#{Liquid::QuotedFragment})/
+      SYNTAX = /(?<layout>#{Liquid::QuotedFragment})/.freeze
 
-      NO_LAYOUT_KEYS = %w(false nil none).freeze
+      NO_LAYOUT_KEYS = %w[false nil none].freeze
 
       attr_reader :layout_expr
 
       def initialize(tag_name, markup, tokens)
         super
         match = markup.match(SYNTAX)
-        raise(
-          Liquid::SyntaxError,
-          "in 'layout' - Valid syntax: layout (none|[layout_name])",
-        ) unless match
+        unless match
+          raise(
+            Liquid::SyntaxError,
+            "in 'layout' - Valid syntax: layout (none|[layout_name])"
+          )
+        end
         layout_markup = match[:layout]
         @layout_expr = if NO_LAYOUT_KEYS.include?(layout_markup.downcase)
           false
@@ -126,16 +131,16 @@ module ThemeCheck
     end
 
     class Render < Liquid::Tag
-      SYNTAX = /((?:#{Liquid::QuotedString}|#{Liquid::VariableSegment})+)(\s+(with|#{Liquid::Render::FOR})\s+(#{Liquid::QuotedFragment}+))?(\s+(?:as)\s+(#{Liquid::VariableSegment}+))?/o
+      SYNTAX = /((?:#{Liquid::QuotedString}|#{Liquid::VariableSegment})+)(\s+(with|#{Liquid::Render::FOR})\s+(#{Liquid::QuotedFragment}+))?(\s+(?:as)\s+(#{Liquid::VariableSegment}+))?/o.freeze
 
-      disable_tags "include"
+      disable_tags 'include'
 
       attr_reader :template_name_expr, :attributes
 
       def initialize(tag_name, markup, options)
         super
 
-        raise SyntaxError, options[:locale].t("errors.syntax.render") unless markup =~ SYNTAX
+        raise SyntaxError, options[:locale].t('errors.syntax.render') unless markup =~ SYNTAX
 
         template_name = Regexp.last_match(1)
         with_or_for = Regexp.last_match(3)

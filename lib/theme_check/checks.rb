@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-require "pp"
-require "timeout"
+
+require 'pp'
+require 'timeout'
 
 module ThemeCheck
   class Checks < Array
@@ -35,11 +36,11 @@ module ThemeCheck
     rescue Liquid::Error
       # Pass-through Liquid errors
       raise
-    rescue => e
+    rescue StandardError => e
       node = args.first
-      template = node.respond_to?(:template) ? node.template.relative_path : "?"
-      markup = node.respond_to?(:markup) ? node.markup : ""
-      node_class = node.respond_to?(:value) ? node.value.class : "?"
+      template = node.respond_to?(:template) ? node.template.relative_path : '?'
+      markup = node.respond_to?(:markup) ? node.markup : ''
+      node_class = node.respond_to?(:value) ? node.value.class : '?'
 
       ThemeCheck.bug(<<~EOS)
         Exception while running `#{check.code_name}##{method}`:

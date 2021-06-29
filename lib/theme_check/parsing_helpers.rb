@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   module ParsingHelpers
     # Yield each chunk outside of "...", '...'
@@ -7,7 +8,7 @@ module ThemeCheck
 
       while scanner.scan(/.*?("|')/)
         yield scanner.matched[0..-2]
-        quote = scanner.matched[-1] == "'" ? "'" : "\""
+        quote = scanner.matched[-1] == "'" ? "'" : '"'
         # Skip to the end of the string
         # Check for empty string first, since follow regexp uses lookahead
         scanner.skip(/#{quote}/) || scanner.skip_until(/[^\\]#{quote}/)

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class ValidJson < JsonCheck
     severity :error

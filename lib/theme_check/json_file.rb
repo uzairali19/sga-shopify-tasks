@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-require "json"
-require "pathname"
+
+require 'json'
+require 'pathname'
 
 module ThemeCheck
   class JsonFile

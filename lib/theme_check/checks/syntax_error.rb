@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   # Report Liquid syntax errors
   class SyntaxError < LiquidCheck
@@ -23,7 +24,7 @@ module ThemeCheck
         exception.to_s(false).sub(/ in ".*"$/, ''),
         line_number: exception.line_number,
         markup: exception.markup_context&.sub(/^in "(.*)"$/, '\1'),
-        template: template,
+        template: template
       )
     end
   end

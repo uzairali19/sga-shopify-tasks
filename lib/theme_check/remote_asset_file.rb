@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-require "net/http"
-require "pathname"
+
+require 'net/http'
+require 'pathname'
 
 module ThemeCheck
   class RemoteAssetFile
@@ -16,7 +17,7 @@ module ThemeCheck
       end
 
       def uri(src)
-        URI.parse(src.sub(%r{^//}, "https://"))
+        URI.parse(src.sub(%r{^//}, 'https://'))
       end
     end
 
@@ -35,7 +36,6 @@ module ThemeCheck
       end
 
       @content = res.body
-
     rescue OpenSSL::SSL::SSLError, Zlib::StreamError, *NET_HTTP_EXCEPTIONS
       @contents = ''
     end

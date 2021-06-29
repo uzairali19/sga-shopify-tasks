@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class DeprecatedFilter < LiquidCheck
     doc docs_url(__FILE__)
@@ -14,7 +15,7 @@ module ThemeCheck
         alternatives = alternatives.map { |alt| "`#{alt}`" }
         add_offense(
           "Deprecated filter `#{filter}`, consider using an alternative: #{alternatives.join(', ')}",
-          node: node,
+          node: node
         )
       end
     end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "forwardable"
+
+require 'forwardable'
 
 module ThemeCheck
   class HtmlNode
@@ -14,7 +15,7 @@ module ThemeCheck
     end
 
     def literal?
-      @value.name == "text"
+      @value.name == 'text'
     end
 
     def element?
@@ -30,8 +31,8 @@ module ThemeCheck
     end
 
     def name
-      if @value.name == "#document-fragment"
-        "document"
+      if @value.name == '#document-fragment'
+        'document'
       else
         @value.name
       end

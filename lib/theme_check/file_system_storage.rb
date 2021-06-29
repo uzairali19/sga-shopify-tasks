@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "pathname"
+
+require 'pathname'
 
 module ThemeCheck
   class FileSystemStorage < Storage
@@ -24,7 +25,7 @@ module ThemeCheck
     end
 
     def files
-      @file_array ||= glob("**/*")
+      @file_array ||= glob('**/*')
         .map { |path| path.relative_path_from(@root).to_s }
     end
 
@@ -45,6 +46,7 @@ module ThemeCheck
 
     def file(name)
       return @files[name] if @files[name]
+
       @files[name] = root.join(name)
     end
   end

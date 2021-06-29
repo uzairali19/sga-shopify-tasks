@@ -3,7 +3,7 @@
 module ThemeCheck
   module LanguageServer
     module CompletionHelper
-      WORD = /\w+/
+      WORD = /\w+/.freeze
 
       def cursor_on_start_content?(content, cursor, regex)
         content.slice(0, cursor).match?(/#{regex}(?:\s|\n)*$/m)
@@ -12,6 +12,7 @@ module ThemeCheck
       def cursor_on_first_word?(content, cursor)
         word = content.match(WORD)
         return false if word.nil?
+
         word_start = word.begin(0)
         word_end = word.end(0)
         word_start <= cursor && cursor <= word_end

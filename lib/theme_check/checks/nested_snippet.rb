@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   # Reports deeply nested {% include ... %} or {% render ... %}
   class NestedSnippet < LiquidCheck
@@ -6,7 +7,7 @@ module ThemeCheck
     category :liquid
     doc docs_url(__FILE__)
 
-    class TemplateInfo < Struct.new(:includes)
+    TemplateInfo = Struct.new(:includes) do
       def with_deep_nested(templates, max, current_level = 0)
         includes.each do |node|
           if current_level >= max
@@ -30,16 +31,14 @@ module ThemeCheck
     end
 
     def on_include(node)
-      if node.value.template_name_expr.is_a?(String)
-        @templates[node.template.name].includes << node
-      end
+      @templates[node.template.name].includes << node if node.value.template_name_expr.is_a?(String)
     end
     alias_method :on_render, :on_include
 
     def on_end
       @templates.each_pair do |_, info|
         info.with_deep_nested(@templates, @max_nesting_level) do |node|
-          add_offense("Too many nested snippets", node: node)
+          add_offense('Too many nested snippets', node: node)
         end
       end
     end

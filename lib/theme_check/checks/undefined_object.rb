@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ThemeCheck
   class UndefinedObject < LiquidCheck
     category :liquid
@@ -48,6 +49,7 @@ module ThemeCheck
           name, _line_number = key
 
           next if unique_keys && seen.include?(name)
+
           seen << name
 
           yield [key, info]
@@ -62,21 +64,25 @@ module ThemeCheck
 
     def on_document(node)
       return if ignore?(node)
+
       @files[node.template.name] = TemplateInfo.new
     end
 
     def on_assign(node)
       return if ignore?(node)
+
       @files[node.template.name].all_assigns[node.value.to] = node
     end
 
     def on_capture(node)
       return if ignore?(node)
+
       @files[node.template.name].all_captures[node.value.instance_variable_get('@to')] = node
     end
 
     def on_for(node)
       return if ignore?(node)
+
       @files[node.template.name].all_forloops[node.value.variable_name] = node
     end
 
@@ -92,15 +98,16 @@ module ThemeCheck
       snippet_name = "snippets/#{node.value.template_name_expr}"
       @files[node.template.name].add_render(
         name: snippet_name,
-        node: node,
+        node: node
       )
     end
 
     def on_variable_lookup(node)
       return if ignore?(node)
+
       @files[node.template.name].add_variable_lookup(
         name: node.value.name,
-        node: node,
+        node: node
       )
     end
 
@@ -112,11 +119,12 @@ module ThemeCheck
       shopify_plus_objects.freeze
 
       each_template do |(name, info)|
-        if 'templates/customers/reset_password' == name
+        case name
+        when 'templates/customers/reset_password'
           # NOTE: `email` is exceptionally exposed as a theme object in
           #       the customers' reset password template
           check_object(info, all_global_objects + ['email'])
-        elsif 'layout/checkout' == name
+        when 'layout/checkout'
           # NOTE: Shopify Plus has exceptionally exposed objects in
           #       the checkout template
           # https://shopify.dev/docs/themes/theme-templates/checkout-liquid#optional-objects
@@ -136,6 +144,7 @@ module ThemeCheck
     def each_template
       @files.each do |(name, info)|
         next if name.start_with?('snippets/')
+
         yield [name, info]
       end
     end
@@ -148,7 +157,7 @@ module ThemeCheck
         next unless snippet_info # NOTE: undefined snippet
 
         snippet_variables = node.value.attributes.keys +
-          Array[node.value.instance_variable_get("@alias_name")]
+                            Array[node.value.instance_variable_get('@alias_name')]
         unless visited_snippets.include?(snippet_name)
           visited_snippets << snippet_name
           check_object(snippet_info, all_global_objects + snippet_variables, node, visited_snippets)
@@ -159,13 +168,13 @@ module ThemeCheck
     def check_undefined(info, all_global_objects, render_node)
       all_variables = info.all_variables
 
-      info.each_variable_lookup(!!render_node) do |(key, node)|
+      info.each_variable_lookup(!render_node.nil?) do |(key, node)|
         name, line_number = key
         next if all_variables.include?(name)
         next if all_global_objects.include?(name)
 
         node = node.parent
-        node = node.parent if %i(condition variable_lookup).include?(node.type_name)
+        node = node.parent if %i[condition variable_lookup].include?(node.type_name)
 
         if render_node
           add_offense("Missing argument `#{name}`", node: render_node)

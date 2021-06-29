@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require "net/http"
+
+require 'net/http'
 
 TIMEOUT_EXCEPTIONS = [
   Net::ReadTimeout,
@@ -7,7 +8,7 @@ TIMEOUT_EXCEPTIONS = [
   Net::WriteTimeout,
   Errno::ETIMEDOUT,
   Timeout::Error,
-]
+].freeze
 
 CONNECTION_EXCEPTIONS = [
   IOError,
@@ -21,7 +22,7 @@ CONNECTION_EXCEPTIONS = [
   Errno::EAGAIN,
   Errno::EHOSTUNREACH,
   Errno::ENETUNREACH,
-]
+].freeze
 
 NET_HTTP_EXCEPTIONS = [
   Net::HTTPBadResponse,
@@ -29,4 +30,4 @@ NET_HTTP_EXCEPTIONS = [
   Net::ProtocolError,
   *TIMEOUT_EXCEPTIONS,
   *CONNECTION_EXCEPTIONS,
-]
+].freeze
