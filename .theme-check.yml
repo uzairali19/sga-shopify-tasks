@@ -6,7 +6,7 @@ ignore:
   - node_modules/*
 
 ConvertIncludeToRender:
-  enabled: false
+  enabled: true
   ignore: []
 
 LiquidTag:
