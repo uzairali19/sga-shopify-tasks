@@ -22,7 +22,7 @@ class VisitorTest < Minitest::Test
       :after_assign,
       :after_tag,
       :on_string, "\n",
-      :after_document,
+      :after_document
     ], @tracer.calls)
   end
 
@@ -59,7 +59,7 @@ class VisitorTest < Minitest::Test
       :after_if,
       :after_tag,
       :on_string, "\n",
-      :after_document,
+      :after_document
     ], @tracer.calls)
   end
 
@@ -78,7 +78,7 @@ class VisitorTest < Minitest::Test
       :after_schema,
       :after_tag,
       :on_string, "\n",
-      :after_document,
+      :after_document
     ], @tracer.calls)
   end
 
@@ -105,7 +105,7 @@ class VisitorTest < Minitest::Test
       :after_paginate,
       :after_tag,
       :on_string, "\n",
-      :after_document,
+      :after_document
     ], @tracer.calls)
   end
 
@@ -129,7 +129,7 @@ class VisitorTest < Minitest::Test
       :after_form,
       :after_tag,
       :on_string, "\n",
-      :after_document,
+      :after_document
     ], @tracer.calls)
   end
 end
