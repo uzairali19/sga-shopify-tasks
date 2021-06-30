@@ -1,0 +1,163 @@
+root: .
+
+require: []
+
+ignore:
+  - node_modules/*
+
+ConvertIncludeToRender:
+  enabled: false
+  ignore: []
+
+LiquidTag:
+  enabled: false
+  ignore: []
+  min_consecutive_statements: 5
+
+MissingTemplate:
+  enabled: true
+  ignore: []
+
+NestedSnippet:
+  enabled: true
+  ignore: []
+  max_nesting_level: 3
+
+RequiredLayoutThemeObject:
+  enabled: true
+  ignore: []
+
+SpaceInsideBraces:
+  enabled: false
+  ignore: []
+
+SyntaxError:
+  enabled: true
+  ignore: []
+
+TemplateLength:
+  enabled: true
+  ignore: []
+  max_length: 500
+  # Exclude content of {% schema %} in line count
+  exclude_schema: true
+  # Exclude content of {% stylesheet %} in line count
+  exclude_stylesheet: true
+  # Exclude content of {% javascript %} in line count
+  exclude_javascript: true
+
+UnknownFilter:
+  enabled: true
+  ignore: []
+
+ImgLazyLoading:
+  enabled: false
+  ignore: []
+
+UnusedAssign:
+  enabled: false
+  ignore: []
+
+UnusedSnippet:
+  enabled: true
+  ignore: []
+
+MatchingSchemaTranslations:
+  enabled: true
+  ignore: []
+
+MatchingTranslations:
+  enabled: true
+  ignore: []
+
+DefaultLocale:
+  enabled: true
+  ignore: []
+
+TranslationKeyExists:
+  enabled: true
+  ignore: []
+
+ValidHTMLTranslation:
+  enabled: true
+  ignore: []
+
+ValidJson:
+  enabled: true
+  ignore: []
+
+ValidSchema:
+  enabled: true
+  ignore: []
+
+MissingRequiredTemplateFiles:
+  enabled: true
+  ignore: []
+
+UndefinedObject:
+  enabled: false
+  ignore: []
+  exclude_snippets: true
+
+RequiredDirectories:
+  enabled: true
+  ignore: []
+
+DeprecatedFilter:
+  enabled: true
+  ignore: []
+
+DeprecateLazysizes:
+  enabled: false
+  ignore: []
+
+DeprecateBgsizes:
+  enabled: false
+  ignore: []
+
+MissingEnableComment:
+  enabled: true
+  ignore: []
+
+ParserBlockingJavaScript:
+  enabled: true
+  ignore: []
+
+ParserBlockingScriptTag:
+  enabled: true
+  ignore: []
+
+AssetSizeJavaScript:
+  enabled: false
+  threshold_in_bytes: 10_000
+  ignore: []
+
+AssetSizeCSS:
+  enabled: false
+  threshold_in_bytes: 100_000
+  ignore: []
+
+AssetSizeCSSStylesheetTag:
+  enabled: false
+  threshold_in_bytes: 100_000
+  ignore: []
+
+ImgWidthAndHeight:
+  enabled: false
+  ignore: []
+
+RemoteAsset:
+  enabled: true
+  ignore: []
+
+AssetUrlFilters:
+  enabled: true
+  ignore: []
+
+ContentForHeaderModification:
+  enabled: true
+  ignore: []
+
+HtmlParsingError:
+  enabled: true
+  ignore: []
