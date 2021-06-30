@@ -156,7 +156,7 @@ AssetUrlFilters:
 
 ContentForHeaderModification:
   enabled: true
-  ignore: [] 
+  ignore: []
 
 HtmlParsingError:
   enabled: true
