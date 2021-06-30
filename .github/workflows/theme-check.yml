@@ -1,6 +1,10 @@
 name: ThemeCheck
 
-on: [pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
   test:
@@ -27,8 +31,9 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('Gemfile') }}
           restore-keys: ${{ runner.os }}-gems-
       - name: Install dependencies
-        run: bundle install --jobs=3 --retry=3 --path=vendor/bundle
+        run: bundle install --jobs=3 --retry=3
       - name: Run tests
         run: bundle exec rake
-      - name: Run Shopify Theme Check
-        uses: pgrimaud/action-shopify-theme-check@0.0.1
+      - name: Test runtime
+        # Testing that runtime can execute, not testing the results themselves
+        run: bundle exec theme-check ./test/theme | grep -q "files inspected"
