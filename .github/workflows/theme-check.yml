@@ -31,5 +31,4 @@ jobs:
       - name: Run tests
         run: bundle exec rake
       - name: Run Shopify Theme Check
-      uses: pgrimaud/action-shopify-theme-check@0.0.1
-
+        uses: pgrimaud/action-shopify-theme-check@0.0.1
