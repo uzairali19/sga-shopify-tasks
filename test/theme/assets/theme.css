@@ -285,7 +285,7 @@ textarea,
 select,
 .disclosure__toggle {
   -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%; }
+ }
 
 a {
   background-color: transparent; }
@@ -3720,7 +3720,8 @@ hr {
       margin: 0 auto; } }
 
 .site-header__logo-image {
-  display: block; }
+  display: block;
+ }
   @media only screen and (min-width: 750px) {
     .site-header__logo-image {
       margin: 0 auto; } }
