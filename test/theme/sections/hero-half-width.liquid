@@ -141,21 +141,29 @@
             {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
           {%- endif -%}
-          <div class="hero__inner 
-          {%- if section.settings.hero_size == 'medium' -%}
-            half-medium-position
+          <div class="hero__inner hero-half--{%- if section.settings.hero_size == 'medium' -%} medium-position
           {%- elsif section.settings.hero_size == 'large' -%}
-            half-large-position
+             large-position
           {%- elsif section.settings.hero_size == 'x-large' -%}
-            half-x-large-position
+             x-large-position
+          {%- elsif section.settings.hero_size == 'x-small' -%}
+             x-small-position
           {%- endif -%}">
             <div class="page-width text-center">
               {%- if section.settings.title != blank -%}
-                <h2 class="half-h1 mega-title{% if section.settings.text_size == 'large' %} half-mega-title--large {%- elsif section.settings.text_size == 'x-small' -%} 
+                <h2 class="half-h1 mega-title 
+                  hero-{% if section.settings.hero_size == 'x-small' and section.settings.text_size == 'large'  %} 
+                    x-small-half-mega-title--large 
+                  {%- elsif section.settings.hero_size == 'x-small' and section.settings.text_size == 'medium' -%} 
+                    x-small-half-mega-title--medium
+                  {%- elsif section.settings.text_size == 'large'-%}  
+                   half-mega-title--large
                    {% endif %}">{{ section.settings.title | escape }}</h2>
               {%- endif -%}
               {%- if section.settings.text != blank -%}
-                <div class="rte-setting mega-subtitle{% if section.settings.text_size == 'large' %} half-mega-subtitle--large{% endif %}">{{ section.settings.text }}</div>
+                <div class="{%- if section.settings.hero_size == 'x-small' -%}
+                  display
+                {%- endif -%}-none  rte-setting mega-subtitle{% if section.settings.text_size == 'large' %} half-mega-subtitle--large{% endif %}">{{ section.settings.text }}</div>
               {%- endif -%}
               {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
                 {%- capture ariaLabel -%}
