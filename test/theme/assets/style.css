@@ -1,0 +1,101 @@
+/* Main half width container */
+
+.half-width-container {
+    width: 50%;
+}
+
+.half-width {
+    position: relative;
+}
+
+.half-width::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-image-overlay);
+    opacity: var(--opacity-image-overlay);
+    z-index: 1;
+}
+
+.hero-half-width__content {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%); }
+  
+  .hero-half-width__image {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+    object-fit: cover;
+    font-family: "object-fit: cover";
+    overflow: hidden; }
+  
+/*================ Hero and slideshow headers ================*/
+
+.half-mega-title--large {
+  font-size: calc(((var(--font-size-header) + 8) / (var(--font-size-base))) * 0.6em) !important; }
+  @media only screen and (min-width: 750px) {
+    .half-mega-title--large {
+      font-size: calc(((var(--font-mega-title-large-desktop)) / (var(--font-size-base))) * 0.6em) !important; } }
+
+@media only screen and (min-width: 750px) {
+  .half-mega-subtitle {
+    font-size: calc(((var(--font-size-base) + 4) / (var(--font-size-base))) *0.5em) !important;
+    margin: 0 auto; } }
+
+.half-mega-subtitle--large {
+  font-size: calc(((var(--font-size-base) + 2) / (var(--font-size-base))) * 0.6em);
+  font-weight: var(--font-weight-header); }
+  @media only screen and (min-width: 750px) {
+    .half-mega-subtitle--large {
+      font-size: calc(((var(--font-size-base) + 8) / (var(--font-size-base))) * 0.6em); } }
+
+.half-h1 {
+    font-size: calc(((var(--font-h2-desktop))/ (var(--font-size-base))) * 1.3em);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+/* Half ad-justable sizes and positions */
+
+.half-mega-subtitle p {
+    color: var(--color-overlay-title-text); }
+
+.half-hero--x-small {
+height: 150px; }
+
+.half-hero--small {
+height: 300px; }
+
+.half-hero--medium {
+height: 400px; }
+
+.half-hero--large {
+height: 488px; }
+
+.half-hero--x-large {
+height: 582px; }
+
+@media only screen and (min-width: 750px) {
+.half-hero--x-small {
+    height: 125px; }
+.half-hero--small {
+    height: 300px; }
+.half-hero--medium {
+    height: 475px; }
+.half-hero--large {
+    height: 650px; }
+.half-hero--x-large {
+    height: 775px; } }
+
+/* Positions */
