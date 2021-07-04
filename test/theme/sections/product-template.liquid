@@ -329,7 +329,14 @@
   </script>
 {% endunless %}
 
-
+<script>
+  $(".tab-item").click(function(){ 
+    //console.log("click click!");
+    $(this).toggleClass("tab-item-active");
+    $(this).next().slideToggle(700);
+    $(this).children("img.arrow").toggleClass("arrow-active");
+});
+</script>
 
 
 {% schema %}
