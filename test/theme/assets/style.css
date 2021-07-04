@@ -144,3 +144,14 @@ font-size: calc(((var(--font-mega-title-large-desktop)) / (var(--font-size-base)
 .hero-half--x-small-position {
     padding: 35px 0px !important;
 }
+
+/* Custom Width Hero Section */
+
+.hero_custom {
+    position: relative;
+    height: 475px;
+    display: table;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
