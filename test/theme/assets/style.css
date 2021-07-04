@@ -230,3 +230,25 @@ padding-top: 20px;
 .meta-heading {
     font-size: 22px;
 }
+
+/* Image with text overlay */
+
+.text-color-white{
+    color: #fff;
+}
+
+.product-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-image-overlay);
+    opacity: var(--opacity-image-overlay);
+    z-index: 1;
+}
+
+.showcase {
+    height: -webkit-fill-available;
+}

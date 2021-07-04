@@ -129,6 +129,24 @@
           </div>
         </div>
       {% endif %}
+      {%- if product.metafields.overlay-image.enable-section == true -%}
+        <div class="hero product-hero box ratio-container lazyload js"
+        id="Hero">
+        <div class="placeholder-background">
+        {%- if product.metafields.overlay-text.image != blank -%}  
+          <img class="showcase" src="{{product.metafields.overlay-text.image}}" alt="{{product.metafields.overlay-text.heading}}">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+        </div>
+            <div class="hero__inner">
+              <div class="page-width text-center">
+                <h2 class="h1 text-color-white">{{product.metafields.overlay-text.heading}} {{product.metafields.overlay-image.enable-section}}</h2>
+                <div class="rte-setting text-color-white">{{product.metafields.overlay-text.sub-title}}</div>
+              </div>
+            </div>
+        </div>
+      {%- endif -%}
     </div>
 
     <div class="grid__item {{ product_description_width }}">
@@ -226,9 +244,6 @@
               </div>
             </div>
           {%- endif -%}
-
-
-
         </div>
 
         <div class="product-single__meta">
