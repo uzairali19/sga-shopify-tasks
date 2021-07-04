@@ -155,3 +155,65 @@ font-size: calc(((var(--font-mega-title-large-desktop)) / (var(--font-size-base)
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
+
+
+/* Poduct Page Template */
+
+.tab {
+    border-top: 1px solid #c9c9c962;
+}
+
+.tab-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tab-item .tab-item-heading {
+color: #1d1e35;
+font-weight: 700;
+font-size: 18px;
+}
+
+.tab-item:hover p {
+  color: #f47c57;
+}
+
+.hidden {
+  display: none;
+}
+
+.hidden .meta-subtitle {
+  color: #787887;
+  padding: 1rem 3rem 0 0;
+}
+
+.tab-item-active .tab-item-heading {
+  color: #1d1e35;
+  font-weight: 700;
+}
+
+.tab-item-active:hover .tab-item-heading {
+  color: #1d1e35;
+}
+
+.arrow {
+  display: block;
+  transform-origin: center;
+  transition: 0.2s;
+  padding: 0 1.5rem;
+}
+
+.tab-item-active .arrow-active {
+  transition: 0.2s;
+  transform: rotate(-180deg);
+}
+
+.meta-list{
+    list-style: none;
+}
+
+.meta-list-item {
+    padding: 10px 0px;
+}

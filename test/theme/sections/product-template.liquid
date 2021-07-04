@@ -182,6 +182,45 @@
 
         <div class="product-single__description rte">
           {{ product.description }}
+          
+          <div class="tab">
+              <div class="tab-item">
+                  <h2 class="tab-item-heading">Description</h2>
+                  <img src="https://img.icons8.com/ios-glyphs/20/000000/expand-arrow--v1.png" alt="arrow down"  class="arrow">
+              </div>
+              <div class="hidden">
+                  <h1 class="meta-heading">Lorem Ipsum</h1>
+                    <ul class="meta-list">
+                        <li class="meta-list-item">1</li>
+                        <li class="meta-list-item">2</li>
+                        <li class="meta-list-item">3</li>
+                        <li class="meta-list-item">4</li>
+                    </ul>
+                  <p class="meta-subtitle">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta obcaecati alias labore. Aut praesentium corporis mollitia nobis totam voluptatum delectus minima quam. Reprehenderit animi voluptatibus minima quibusdam, incidunt iusto praesentium?</p>
+              </div>
+          </div>
+          <div class="tab">
+              <div class="tab-item">
+              <h2 class="tab-item-heading">Tab 2</h2>
+              <img src="https://img.icons8.com/ios-glyphs/20/000000/expand-arrow--v1.png" alt="arrow down"  class="arrow">
+              </div>
+              <div class="hidden">
+              <p class="meta-subtitle">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate officia delectus eaque esse veritatis nihil quisquam adipisci. Doloremque eveniet vitae cupiditate, rerum cum, rem dolor deserunt magnam delectus earum natus?</p>
+              </div>
+          </div>
+          <div class="tab">
+              <div class="tab-item">
+              <h2 class="tab-item-heading">Tab 3</h2>
+              <img src="https://img.icons8.com/ios-glyphs/20/000000/expand-arrow--v1.png" alt="arrow down"  class="arrow">
+              </div>
+              <div class="hidden">
+                  <ul class="meta-list">
+                      <li class="meta-list-item">shipping</li>
+                      <li class="meta-list-item">More shipping custom Content</li>
+                      <li class="meta-list-item">Secure Payment</li>
+                  </ul>
+              </div>
+          </div>
         </div>
 
         <div class="product-single__meta">
@@ -289,6 +328,7 @@
     {{ product.media | where: 'media_type', 'model' | json }}
   </script>
 {% endunless %}
+
 
 
 
