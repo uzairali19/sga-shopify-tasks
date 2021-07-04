@@ -129,8 +129,9 @@
           </div>
         </div>
       {% endif %}
-      {%- if product.metafields.overlay-image.enable-section == true -%}
-        <div class="hero product-hero box ratio-container lazyload js"
+      <!-- Image with text overlay -->
+      {%- if product.metafields.overlay-image.enable-section == "true" -%}
+        <div class="hero product-hero-section product-hero box ratio-container lazyload js"
         id="Hero">
         <div class="placeholder-background">
         {%- if product.metafields.overlay-text.image != blank -%}  
@@ -141,12 +142,30 @@
         </div>
             <div class="hero__inner">
               <div class="page-width text-center">
-                <h2 class="h1 text-color-white">{{product.metafields.overlay-text.heading}} {{product.metafields.overlay-image.enable-section}}</h2>
+                <h2 class="h1 text-color-white">{{product.metafields.overlay-text.heading}}</h2>
                 <div class="rte-setting text-color-white">{{product.metafields.overlay-text.sub-title}}</div>
               </div>
             </div>
         </div>
       {%- endif -%}
+
+      <!-- Image with text -->
+      {% if product.metafields.image-text.enable == "true" %}
+      <div class="row">
+        <div class="feature-row__item">
+          {% if product.metafields.image-text.image != blank %}
+            <img src="{{product.metafields.image-text.image}}" alt="{{product.metafields.image-text.heading}}">
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <div class="feature-row__item feature-row__text">
+            <h2 class="h3 heading-border">{{product.metafields.image-text.heading}}</h2>
+            <div class="rte rte-setting featured-row__subtext">{{product.metafields.image-text.summary}}</div>
+        </div>
+      </div>
+      {% endif %}
+      <!-- Image with text end -->
     </div>
 
     <div class="grid__item {{ product_description_width }}">
