@@ -1,5 +1,15 @@
 /* Main half width container */
 
+body {
+    font-family: sans-serif !important;
+}
+.h1, .h2, h1, h2, .h3, .h4, .h5, .h6, h3, h4, h5, h6 {
+    font-family: sans-serif !important;
+}
+.btn, .shopify-payment-button .shopify-payment-button__button--unbranded {
+    font-family: sans-serif !important;
+}
+
 .half-width-container {
     width: 50%;
 }
@@ -154,4 +164,116 @@ font-size: calc(((var(--font-mega-title-large-desktop)) / (var(--font-size-base)
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+}
+
+
+/* Poduct Page Template */
+
+.tab {
+    border-top: 1px solid #c9c9c962;
+    padding: 10px 0px;
+}
+
+.tab-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tab-item .tab-item-heading {
+color: #1d1e35;
+font-weight: 700;
+font-size: 18px;
+padding-top: 20px;
+}
+
+.tab-item:hover .tab-item-heading {
+  color: #7a7a7a;
+}
+
+.hidden {
+  display: none;
+}
+
+.hidden .meta-subtitle {
+  color: #787887;
+  padding: 1rem 3rem 0 0;
+}
+
+.tab-item-active .tab-item-heading {
+  color: #1d1e35;
+  font-weight: 700;
+}
+
+.tab-item-active:hover .tab-item-heading {
+  color: #1d1e35;
+}
+
+.arrow {
+  display: block;
+  transform-origin: center;
+  transition: 0.2s;
+  padding: 0 1.5rem;
+}
+
+.tab-item-active .arrow-active {
+  transition: 0.2s;
+  transform: rotate(-180deg);
+}
+
+.margin-left-meta-list {
+    margin-left: 2px !important;
+}
+
+.meta-list{
+    list-style: none !important;
+}
+
+.meta-list-item {
+    padding: 5px 0px;
+}
+
+.meta-list-item i {
+    padding-right: 10px;
+}
+
+.meta-heading {
+    font-size: 22px;
+}
+
+/* Image with text overlay */
+
+.text-color-white{
+    color: #fff;
+}
+
+.product-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-image-overlay);
+    opacity: var(--opacity-image-overlay);
+    z-index: 1;
+}
+
+.product-hero-section {
+    margin-top: 80px;
+}
+
+.showcase {
+    height: -webkit-fill-available;
+}
+
+/* Image With Text */
+
+.row {
+    margin-top: 80px;
+}
+
+.heading-border {
+    border-bottom: 1px solid #c9c9c962;
 }
